@@ -1,0 +1,12 @@
+.BOX {
+    margin-top: 50px;
+}
+
+.span {
+    text-decoration: underline;
+    color: rgb(0, 204, 255);
+}
+
+.home-card {
+    padding: 10px 20px !important;
+}
