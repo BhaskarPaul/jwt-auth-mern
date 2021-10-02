@@ -11,15 +11,14 @@ const Signin = () => {
     let history = useHistory();
 
     const handleSubmitRequest = () => {
-        const authToken = signin(email, password);
-        if (authToken) {
-            history.push("/home");
-            return;
-        }
+        signin(email, password).then(res => {
+            localStorage.setItem('token', res);
+            history.push('/home');
+        }).catch(err => console.error(err));
     };
 
     const handleSubmit = () => {
-        console.log(email, password);
+        // console.log(email, password);
         handleSubmitRequest();
         setEmail("");
         setPassword("");
@@ -47,7 +46,7 @@ const Signin = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </Form.Field>
-                <Button type="submit" onClick={handleSubmit}>
+                <Button onClick={handleSubmit}>
                     Submit
                 </Button>
             </Form>

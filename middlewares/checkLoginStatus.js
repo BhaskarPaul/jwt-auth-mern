@@ -6,7 +6,7 @@ const isLoggedIn = (req, res, next) => {
 
     try {
         const verified = jwt.verify(token, process.env.WEBTOKENSECRET); // returns token consists of data
-        req.userLoginStatus = verified;
+        req.user = verified;
     } catch (error) {
         res.status(400).send("Invalid Auth Credentials ... ");
     }

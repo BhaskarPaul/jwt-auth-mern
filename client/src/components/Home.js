@@ -1,27 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { signout, userhome } from "../helpers";
+import { Link, useHistory } from "react-router-dom";
+import { userhome, deleteUser } from "../helpers";
 import "../App.css";
 import { Button, Container, Header } from "semantic-ui-react";
 
 const Home = () => {
+    const history = useHistory();
+
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
-        setUserData(userhome());
+        userhome()
+            .then((res) => setUserData(res))
+            .catch((err) => console.error(err));
     }, []);
 
-    console.log(userData);
+    const redirectToSignIn = () => {
+        localStorage.removeItem("token");
+        history.push("/signin");
+    };
+
+    const redirectToSignUp = () => {
+        deleteUser()
+            .then((res) => console.log(res))
+            .catch((err) => console.error(err));
+    };
 
     return (
         <Container className="BOX">
-            {sessionStorage.getItem("token") ? (
+            {localStorage.getItem("token") ? (
                 <>
                     <Header as="h2">
                         Welcome <span className="span">{userData}</span>
                     </Header>
-                    <Button color="teal">Log out</Button>
-                    <Button color="red">Delete Account</Button>
+                    <Button color="teal" onClick={() => redirectToSignIn()}>
+                        Log out
+                    </Button>
+                    <Button color="red" onClick={() => redirectToSignUp()}>
+                        Delete Account
+                    </Button>
                 </>
             ) : (
                 <>

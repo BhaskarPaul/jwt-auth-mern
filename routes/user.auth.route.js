@@ -16,7 +16,7 @@ router.route("/login").post(loginUser);
 
 router.get("/home", isLoggedIn, getUserData);
 
-router.post("/logout", isLoggedIn, logoutUser);
+// router.post("/logout", isLoggedIn, logoutUser);
 
 router.post("/deleteAccount", isLoggedIn, deleteUserAccount);
 

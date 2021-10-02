@@ -49,34 +49,30 @@ module.exports = {
         }
     },
     getUserData: async (req, res) => {
-        const currentUserId = await req.userLoginStatus._id;
         try {
+            const currentUserId = await req.user._id;
             const userData = await User.findOne({ _id: currentUserId });
             res.status(200).send(userData.email);
-            return;
         } catch (err) {
             res.status(404).send("Something went wrong");
-            return;
         }
     },
     deleteUserAccount: async (req, res) => {
-        const currentUserId = req.userLoginStatus._id;
         try {
+            const currentUserId = await req.user._id;
             const userDeleteStatus = await User.deleteOne({
                 _id: currentUserId,
             });
             res.status(200).send(userDeleteStatus);
         } catch (error) {
             res.status(404).send("Something went wrong");
-            return;
         }
     },
-    logoutUser: async (req, res) => {
-        try {
-            delete req.header["auth-token"];
-            res.status(200).send("User logged out");
-        } catch (error) {
-            res.status(404).send("Something went wrong ... ");
-        }
-    },
+    // logoutUser: async (req, res) => {
+    //     try {
+    //         res.status(200).send("User logged out");
+    //     } catch (error) {
+    //         res.status(404).send("Something went wrong ... ");
+    //     }
+    // },
 };

@@ -11,10 +11,10 @@ const Signup = () => {
     let history = useHistory();
 
     const handleSubmitRequest = () => {
-        const status = signup(email, password);
-        if (status) {
-            history.push("/signin");
-        }
+        signup(email, password).then(res => {
+            history.push('/signin');
+            localStorage.setItem('1-x-p', true);
+        }).catch(err => console.error(err));
     };
 
     const handleSubmit = () => {
