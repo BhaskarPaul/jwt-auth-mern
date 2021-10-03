@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { signin } from '../helpers';
 import '../App.css';
@@ -8,6 +8,15 @@ import auth from '../helpers/auth';
 const Signin = props => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            console.log('token is here');
+            auth.in(() => {
+                props.history.push('/home');
+            });
+        }
+    }, []);
 
     const handleSubmitRequest = () => {
         signin(email, password)
