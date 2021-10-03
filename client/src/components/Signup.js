@@ -1,20 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { signup } from "../helpers";
 import "../App.css";
 import { Container, Header, Form, Button } from "semantic-ui-react";
+import { AuthContext } from "../Context/AuthContext";
 
 const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     let history = useHistory();
+    const state = useContext(AuthContext);
+
+    useEffect(() => {
+        if (state.loginStatus === "in") {
+            history.push("/home");
+        } else if (state.loginStatus === "up") {
+            history.push("/signin");
+        }
+    });
 
     const handleSubmitRequest = () => {
-        signup(email, password).then(res => {
-            history.push('/signin');
-            localStorage.setItem('1-x-p', true);
-        }).catch(err => console.error(err));
+        signup(email, password)
+            .then(res => {
+                history.push("/signin");
+                localStorage.setItem("1-x-p", true);
+                state.setLoginStatus("up");
+            })
+            .catch(err => console.error(err));
     };
 
     const handleSubmit = () => {
@@ -34,7 +47,7 @@ const Signup = () => {
                         placeholder="Email"
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={e => setEmail(e.target.value)}
                     />
                 </Form.Field>
                 <Form.Field>
@@ -43,7 +56,7 @@ const Signup = () => {
                         placeholder="Password"
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={e => setPassword(e.target.value)}
                     />
                 </Form.Field>
                 <Button type="submit" onClick={handleSubmit}>

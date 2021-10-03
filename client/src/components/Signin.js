@@ -1,20 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { signin } from "../helpers";
 import "../App.css";
 import { Container, Header, Form, Button } from "semantic-ui-react";
+import { AuthContext } from "../Context/AuthContext";
 
 const Signin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     let history = useHistory();
+    const state = useContext(AuthContext);
+
+    useEffect(() => {
+        if (state.loginStatus === "in") {
+            history.push("/home");
+            return;
+        } else if (state.loginStatus === null) {
+            history.push("/signup");
+            return;
+        }
+    });
 
     const handleSubmitRequest = () => {
-        signin(email, password).then(res => {
-            localStorage.setItem('token', res);
-            history.push('/home');
-        }).catch(err => console.error(err));
+        signin(email, password)
+            .then(res => {
+                localStorage.setItem("token", res);
+                history.push("/home");
+                state.setLoginStatus("in");
+            })
+            .catch(err => console.error(err));
     };
 
     const handleSubmit = () => {
@@ -34,7 +49,7 @@ const Signin = () => {
                         placeholder="Email"
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={e => setEmail(e.target.value)}
                     />
                 </Form.Field>
                 <Form.Field>
@@ -43,12 +58,10 @@ const Signin = () => {
                         placeholder="Password"
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={e => setPassword(e.target.value)}
                     />
                 </Form.Field>
-                <Button onClick={handleSubmit}>
-                    Submit
-                </Button>
+                <Button onClick={handleSubmit}>Submit</Button>
             </Form>
         </Container>
     );

@@ -1,29 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { userhome, deleteUser } from "../helpers";
 import "../App.css";
 import { Button, Container, Header } from "semantic-ui-react";
+import { AuthContext } from "../Context/AuthContext";
 
 const Home = () => {
-    const history = useHistory();
+    let history = useHistory();
+    const state = useContext(AuthContext);
 
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
         userhome()
-            .then((res) => setUserData(res))
-            .catch((err) => console.error(err));
+            .then(res => setUserData(res))
+            .catch(err => console.error(err));
     }, []);
 
     const redirectToSignIn = () => {
         localStorage.removeItem("token");
+        state.setLoginStatus("up");
         history.push("/signin");
     };
 
     const redirectToSignUp = () => {
         deleteUser()
-            .then((res) => console.log(res))
-            .catch((err) => console.error(err));
+            .then(res => {
+                console.log(res);
+                state.setLoginStatus(null);
+            })
+            .catch(err => console.error(err));
     };
 
     return (
