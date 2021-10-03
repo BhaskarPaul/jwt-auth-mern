@@ -1,27 +1,32 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { signin } from "../helpers";
-import "../App.css";
-import { Container, Header, Form, Button } from "semantic-ui-react";
+import React, { useState } from 'react';
+import { useHistory, Link } from 'react-router-dom';
+import { signin } from '../helpers';
+import '../App.css';
+import { Container, Header, Form, Button } from 'semantic-ui-react';
+import auth from '../helpers/auth';
 
-const Signin = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+const Signin = props => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     let history = useHistory();
 
     const handleSubmitRequest = () => {
-        signin(email, password).then(res => {
-            localStorage.setItem('token', res);
-            history.push('/home');
-        }).catch(err => console.error(err));
+        signin(email, password)
+            .then(res => {
+                localStorage.setItem('token', res);
+                auth.in(() => {
+                    props.history.push('/home');
+                });
+            })
+            .catch(err => console.error(err));
     };
 
     const handleSubmit = () => {
         // console.log(email, password);
         handleSubmitRequest();
-        setEmail("");
-        setPassword("");
+        setEmail('');
+        setPassword('');
     };
 
     return (
@@ -34,7 +39,7 @@ const Signin = () => {
                         placeholder="Email"
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={e => setEmail(e.target.value)}
                     />
                 </Form.Field>
                 <Form.Field>
@@ -43,12 +48,16 @@ const Signin = () => {
                         placeholder="Password"
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={e => setPassword(e.target.value)}
                     />
                 </Form.Field>
-                <Button onClick={handleSubmit}>
-                    Submit
-                </Button>
+                <Form.Field>
+                    <p>
+                        Have not registered yet ?
+                        <Link to={{ pathname: '/signup' }}> Sign Up </Link>
+                    </p>
+                </Form.Field>
+                <Button onClick={handleSubmit}>Submit</Button>
             </Form>
         </Container>
     );

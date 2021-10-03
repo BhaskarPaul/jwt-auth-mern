@@ -14,19 +14,18 @@ export const signin = async (email, password) => {
         email,
         password,
     });
-    return response.data;        
+    return response.data;
 };
 
 export const userhome = async () => {
     const authToken = localStorage.getItem("token");
     const response = await axios.get(`${baseurl}/home`, {
         headers: {
-            'Content-type': 'application/json',
+            "Content-type": "application/json",
             "auth-token": authToken,
         },
     });
     return response.data;
-        
 };
 
 export const deleteUser = async () => {
@@ -34,7 +33,7 @@ export const deleteUser = async () => {
     // console.log(authToken);
     const response = await axios.post(`${baseurl}/deleteAccount`, {
         headers: {
-            'Content-type': 'application/json',
+            "Content-type": "application/json",
             "auth-token": authToken,
         },
     });
