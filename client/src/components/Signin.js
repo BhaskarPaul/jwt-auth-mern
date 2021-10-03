@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { signin } from '../helpers';
 import '../App.css';
 import { Container, Header, Form, Button } from 'semantic-ui-react';
@@ -8,8 +8,6 @@ import auth from '../helpers/auth';
 const Signin = props => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    let history = useHistory();
 
     const handleSubmitRequest = () => {
         signin(email, password)

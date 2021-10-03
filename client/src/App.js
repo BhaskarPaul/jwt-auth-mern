@@ -13,6 +13,7 @@ import Signup from './components/Signup';
 import ProtectedRoute from './routes/ProtectedRoute';
 
 const App = () => {
+
     return (
         <div>
             <Router>

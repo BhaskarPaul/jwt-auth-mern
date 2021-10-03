@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 // import { Provider } from "react-redux";
 // import thunk from "redux-thunk";
 // import { rootReducers } from "./container/reducres";
+import { AuthProvider } from "./Context/AuthContext";
 import "./index.css";
 import App from "./App";
 import "semantic-ui-css/semantic.min.css";
@@ -20,9 +21,10 @@ import "semantic-ui-css/semantic.min.css";
 
 ReactDOM.render(
     // <Provider store={store}>
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
-    // </Provider>,
+    <AuthProvider>
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    </AuthProvider>,
     document.getElementById("root")
 );
